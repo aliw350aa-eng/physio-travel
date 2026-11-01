@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Physio Travel</title>
+<meta name="description" content="احجز جلسة علاج طبيعي في بيتك أو في العيادة، أو سجّل كطبيب وافتح صفحتك واستقبل الحجوزات.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600&family=Readex+Pro:wght@500;600;700&display=swap">
+<link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="brand">
+      <div class="logo">Physio<span>Travel</span></div>
+      <p class="tag">اختار جلستك والدكتور، والعلاج الطبيعي يوصلك.</p>
+    </div>
+    <svg class="route" viewBox="0 0 220 44" aria-hidden="true"><path d="M12 32 C 60 4, 110 44, 150 20 S 200 14, 208 12"/><circle class="a" cx="12" cy="32" r="6"/><circle class="b" cx="208" cy="12" r="6"/></svg>
+  </header>
+
+  <nav class="userbar" id="userbar" aria-label="الحساب" hidden></nav>
+  <div class="flash" id="flash" role="status" hidden></div>
+
+  <section class="step" id="v-boot"><p class="sub m0">جاري تحميل التطبيق...</p></section>
+
+  <!-- welcome / sign up / log in -->
+  <section id="v-welcome" hidden>
+    <div class="step">
+      <h2>أهلًا بيك في Physio Travel</h2>
+      <p class="sub">اختار اللي عايزه وكمّل بحساب جديد أو سجّل دخول.</p>
+      <div class="grid">
+        <button class="opt role" id="role-patient" type="button"><b>حجز جلسة</b><small>دوّر على دكتور، احجز جلسة، وراسله مباشرة.</small></button>
+        <button class="opt role" id="role-doctor" type="button"><b>طبيب</b><small>افتح صفحتك، املأ بياناتك وأسعارك، واستقبل الحجوزات وردّ على المرضى.</small></button>
+      </div>
+      <p class="mt14 m0"><a class="plink" href="#book" id="browse">تصفح الدكاترة من غير حساب ›</a></p>
+    </div>
+    <form class="step" id="authbox" hidden novalidate>
+      <h2 id="authtitle"></h2>
+      <p class="authnote" id="authnote" hidden></p>
+      <div class="seg" id="authmode">
+        <button class="opt" type="button" data-m="signup"><b>حساب جديد</b></button>
+        <button class="opt" type="button" data-m="login"><b>عندي حساب</b></button>
+      </div>
+      <div class="fg mt14">
+        <div class="field" id="af-name"><label for="a-name">الاسم</label><input id="a-name" autocomplete="name" placeholder="مثال: أحمد محمد" maxlength="60"></div>
+        <div class="field"><label for="a-email">الإيميل</label><input id="a-email" type="email" autocomplete="email" class="ltr-in" placeholder="name@example.com" maxlength="120"></div>
+        <div class="field"><label for="a-pass">كلمة السر</label><input id="a-pass" type="password" class="ltr-in" maxlength="100"></div>
+      </div>
+      <p class="err" id="aerr" role="alert"></p>
+      <button class="cta" id="asubmit" type="submit">كمّل</button>
+    </form>
+  </section>
+
+  <!-- patient: booking -->
+  <div class="layout" id="v-home" hidden>
+    <main>
+      <section class="step" aria-labelledby="h1">
+        <h2 id="h1"><span class="n">1</span>نوع الجلسة</h2>
+        <div class="grid" id="types"></div>
+      </section>
+
+      <section class="step" aria-labelledby="h2">
+        <h2 id="h2"><span class="n">2</span>مكانك</h2>
+        <div class="row">
+          <div class="field">
+            <label for="city">المدينة</label>
+            <select id="city"></select>
+          </div>
+          <div class="field">
+            <span class="lbl">مكان الجلسة</span>
+            <div class="seg" id="mode"></div>
+          </div>
+          <div class="field">
+            <label for="count">عدد الجلسات</label>
+            <select id="count">
+              <option value="1">جلسة واحدة</option>
+              <option value="5">باقة ٥ جلسات (خصم ٨٪)</option>
+              <option value="10">باقة ١٠ جلسات (خصم ١٥٪)</option>
+            </select>
+          </div>
+        </div>
+      </section>
+
+      <section class="step" aria-labelledby="h3">
+        <h2 id="h3"><span class="n">3</span>الدكتور</h2>
+        <p class="sub" id="docsub"></p>
+        <div class="docs" id="docs"></div>
+      </section>
+
+      <section class="step" aria-labelledby="h4">
+        <h2 id="h4"><span class="n">4</span>الميعاد</h2>
+        <span class="lbl">اليوم</span>
+        <div class="dates mt8" id="dates"></div>
+        <span class="lbl gap">الساعة</span>
+        <div class="slots" id="slots"></div>
+      </section>
+
+      <section class="mine" id="minewrap" hidden>
+        <h2>حجوزاتي</h2>
+        <div id="mine"></div>
+      </section>
+
+      <section class="mine" id="convwrap" hidden>
+        <h2>رسائلي</h2>
+        <div id="convs"></div>
+      </section>
+    </main>
+
+    <aside class="aside" id="summary">
+      <div class="card" id="sumcard">
+        <h3>ملخص الحجز</h3>
+        <dl id="lines"></dl>
+        <hr>
+        <dl id="money"></dl>
+        <div class="total mt8"><span>الإجمالي</span><strong id="total">—</strong></div>
+        <div class="contact">
+          <div class="field"><label for="pname">الاسم</label><input id="pname" autocomplete="name" placeholder="اسمك بالكامل" maxlength="60"></div>
+          <div class="field"><label for="pphone">رقم الموبايل</label><input id="pphone" inputmode="tel" autocomplete="tel" placeholder="01XXXXXXXXX" class="ltr-in" maxlength="20"></div>
+          <div class="field" id="addrwrap"><label for="paddr">العنوان</label><input id="paddr" autocomplete="street-address" placeholder="الشارع، رقم العمارة، الدور" maxlength="200"></div>
+        </div>
+        <p class="err" id="err" role="alert"></p>
+        <button class="cta" id="book" type="button">ابعت طلب الحجز</button>
+        <p class="note">الدكتور هيأكد طلبك، والدفع كاش بعد الجلسة.</p>
+      </div>
+      <div id="donebox" hidden></div>
+    </aside>
+  </div>
+
+  <!-- public doctor page -->
+  <div id="v-profile" class="prof" hidden></div>
+
+  <!-- doctor dashboard -->
+  <div id="v-dash" hidden>
+    <div class="tabs" id="tabs">
+      <a href="#dashboard-bookings" data-tab="bookings">الحجوزات <span class="cnt" id="cnt-b"></span></a>
+      <a href="#dashboard-messages" data-tab="messages">الرسائل</a>
+      <a href="#dashboard-profile" data-tab="profile">بياناتي وصفحتي</a>
+    </div>
+    <div id="d-bookings" hidden></div>
+    <div id="d-messages" hidden>
+      <div class="mgrid">
+        <div class="docs" id="convlist"></div>
+        <div id="convpane"></div>
+      </div>
+    </div>
+    <div id="d-profile" hidden></div>
+  </div>
+
+  <footer>
+    <div class="credit" dir="ltr">
+      <span>Made by</span>
+      <strong>Dr. Ali Abdelrhman Saad</strong>
+      <em>Dr. Omar Alaa</em>
+    </div>
+  </footer>
+
+  <div class="bar" id="bar" hidden>
+    <div class="t"><small>الإجمالي</small><strong id="bartotal">—</strong></div>
+    <a href="#summary" id="barlink">كمّل الحجز</a>
+  </div>
+</div>
+<script src="/app.js" defer></script>
+</body>
+</html>

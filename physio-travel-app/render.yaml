@@ -1,0 +1,14 @@
+# Blueprint لمنصة Render. القرص الدائم لازم عشان قاعدة البيانات متتمسحش عند كل نشر.
+services:
+  - type: web
+    name: physio-travel
+    runtime: docker
+    plan: starter
+    healthCheckPath: /healthz
+    envVars:
+      - key: SEED_DEMO
+        value: "1"   # امسح السطر ده (أو خليه 0) لما تبطل تحتاج الأطباء النماذج
+    disk:
+      name: physio-data
+      mountPath: /data
+      sizeGB: 1
